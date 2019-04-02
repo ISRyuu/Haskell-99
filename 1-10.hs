@@ -1,6 +1,7 @@
 import Control.Applicative
 import Data.Monoid
 import Control.Monad.Trans.State
+import Data.List
 
 -- problem 1
 lastElem :: [a] -> a
@@ -8,19 +9,19 @@ lastElem = foldr1 (flip const)
 
 -- problem 2
 lastButOne :: [a] -> a
-lastButOne [] = error "list is empty"
-lastButOne (y:[]) = error "no enough elems"
+lastButOne []       = error "list is empty"
+lastButOne (y:[])   = error "no enough elems"
 lastButOne (x:y:[]) = x
 -- this can also be written as:
 -- lastButOne [x, _] = x
-lastButOne (x:xs) = lastButOne xs
+lastButOne (x:xs)   = lastButOne xs
 
 lastButOne' :: [a] -> a
 lastButOne' = head . reverse . init
 
 -- problem 3
 elementAt :: [a] -> Int -> a
-elementAt [] _ = error "not enough elems"
+elementAt [] _     = error "not enough elems"
 elementAt (x:xs) 1 = x
 elementAt (x:xs) n = elementAt xs (n-1)
 
@@ -32,13 +33,24 @@ myLength = foldr (\_ x -> x + 1) 0
 myReverse :: [a] -> [a]
 myReverse = foldl (flip (:)) []
 
--- problem 7
+-- problem 6
 isPalindrome :: Eq a => [a] -> Bool
 isPalindrome = (==) <$> reverse <*> id
 
 isPalindrome' :: Eq a => [a] -> Bool
-isPalindrome' [] = True
+isPalindrome' []  = True
 isPalindrome' [_] = True
-isPalindrome' x =
+isPalindrome' x   =
   liftA2 (&&) (liftA2 (==) head last) (isPalindrome' . tail . init) x
 
+-- problem 7
+data NestedList a = Elem a | List [NestedList a]
+
+flatten :: NestedList a -> [a]
+flatten (Elem a)      = [a]
+flatten (List [])     = []
+flatten (List (x:xs)) = (flatten x) ++ (flatten $ List xs)
+
+-- problem 8
+compress :: String -> String
+compress = (fmap head) . group
