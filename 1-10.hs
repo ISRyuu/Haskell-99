@@ -54,3 +54,17 @@ flatten (List (x:xs)) = (flatten x) ++ (flatten $ List xs)
 -- problem 8
 compress :: String -> String
 compress = (fmap head) . group
+
+-- problem 9
+-- pack = group
+pack :: Eq a => [a] -> [[a]]
+pack [] = []
+pack w@(x:xs) =
+  let sp = go x w
+      (h, t) = sp
+      go x w = (takeWhile (==x) w, dropWhile (==x) w) 
+  in h : pack t
+
+-- problem 10
+encode :: Eq a => [a] -> [(Int, a)]
+encode = map (\x -> (length x, head x)) . pack
