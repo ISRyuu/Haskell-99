@@ -1,4 +1,6 @@
 import Data.List
+import Control.Monad
+import Control.Monad.State
 
 -- problem 11
 data Encoding a =
@@ -35,3 +37,16 @@ encodeDirect (x:xs) = go x 1 xs
       | n <= 0 = error "n must be greater than 0!"
       | n == 1 = Single x
       | otherwise = Mutiple n x
+
+-- problem 14
+dupli :: [a] -> [a]
+dupli x = concat $ fmap go x
+  where go x = [x,x]
+
+-- problem 15
+repli :: [a] -> Int -> [a]
+repli xs n =  concat $ fmap (go n) xs
+  where go n x = replicate n x
+
+--dropEvery :: [a] -> Int -> [a]
+main = undefined
