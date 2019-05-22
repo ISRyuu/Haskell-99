@@ -48,5 +48,30 @@ repli :: [a] -> Int -> [a]
 repli xs n =  concat $ fmap (go n) xs
   where go n x = replicate n x
 
---dropEvery :: [a] -> Int -> [a]
+-- problem 16
+dropEvery :: [a] -> Int -> [a]
+dropEvery xs n = go (n-1) xs
+  where
+    go _ []     = []
+    go 0 (x:xs) = go (n-1) xs
+    go m (x:xs) = x : go (m-1) xs
+
+-- problem 17
+split :: [a] -> Int -> ([a], [a])
+split xs n = (take n xs, drop n xs)
+
+-- problem 18
+slice :: [a] -> Int -> Int -> [a]
+slice xs l r = drop (l-1) . take r $ xs 
+
+-- problem 19
+rotate :: [a] -> Int -> [a]
+rotate xs n = take m . drop (n `mod` m) . cycle $ xs
+  where
+    m = length xs
+
+-- problem 20
+removeAt :: Int -> [a] -> (a, [a])
+removeAt n xs = (xs !! n, take (n-1) xs ++ drop n xs)
+
 main = undefined
