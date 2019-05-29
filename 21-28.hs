@@ -29,7 +29,7 @@ removeAt n xs = (xs !! (n-1), take (n-1) xs ++ drop n xs)
 diff_select :: Int -> Int -> IO [Int]
 diff_select n y
   | y <= n = return [1..y]
-  | otherwise = fst <$> runStateT (replicateM n go) [1..y]
+  | otherwise = evalStateT (replicateM n go) [1..y]
   where go = StateT $ \s -> (flip removeAt $ s) <$> randomRIO (1, length s)
 
 main = undefined
