@@ -72,6 +72,6 @@ rotate xs n = take m . drop (n `mod` m) . cycle $ xs
 
 -- problem 20
 removeAt :: Int -> [a] -> (a, [a])
-removeAt n xs = (xs !! n, take (n-1) xs ++ drop n xs)
+removeAt n xs = (xs !! (n-1), take (n-1) xs ++ drop n xs)
 
 main = undefined
