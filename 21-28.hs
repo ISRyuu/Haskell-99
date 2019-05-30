@@ -1,6 +1,14 @@
+{-# LANGUAGE AllowAmbiguousTypes #-}
+
 import Data.List
+import Control.Monad.Primitive
 import Control.Monad
+import Control.Applicative
 import System.Random
+import Data.Array.IO
+import Control.Monad.Primitive
+import qualified Data.Vector.Unboxed.Mutable as UMV
+import qualified Data.Vector.Unboxed as UV
 import Control.Monad.Trans.State
 
 -- problem 21
@@ -31,5 +39,14 @@ diff_select n y
   | y <= n = return [1..y]
   | otherwise = evalStateT (replicateM n go) [1..y]
   where go = StateT $ \s -> (flip removeAt $ s) <$> randomRIO (1, length s)
+
+-- problem 25: helper functions
+shuffleSwapPairs :: Int -> IO [(Int, Int)]
+shuffleSwapPairs n = liftA2 fmap zip go $ [0..n-1]
+  where go = traverse (curry randomRIO $ n)
+
+-- problem 25
+rnd_permu :: [a] -> IO [a]
+rnd_permu n = undefined
 
 main = undefined
