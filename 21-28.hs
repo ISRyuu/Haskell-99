@@ -1,14 +1,11 @@
-{-# LANGUAGE AllowAmbiguousTypes #-}
-
 import Data.List
 import Control.Monad.Primitive
 import Control.Monad
 import Control.Applicative
 import System.Random
-import Data.Array.IO
 import Control.Monad.Primitive
-import qualified Data.Vector.Unboxed.Mutable as UMV
-import qualified Data.Vector.Unboxed as UV
+import qualified Data.Vector.Unboxed.Mutable as VUM
+import qualified Data.Vector.Unboxed as VU
 import Control.Monad.Trans.State
 
 -- problem 21
@@ -43,10 +40,16 @@ diff_select n y
 -- problem 25: helper functions
 shuffleSwapPairs :: Int -> IO [(Int, Int)]
 shuffleSwapPairs n = liftA2 fmap zip go $ [0..n-1]
-  where go = traverse (curry randomRIO $ n)
+  where go = traverse (curry randomRIO $ (n-1))
 
 -- problem 25
-rnd_permu :: [a] -> IO [a]
-rnd_permu n = undefined
-
+rnd_permu :: (VU.Unbox a) => VU.Vector a -> IO (VU.Vector a)
+rnd_permu v = do
+  let l = VU.length v  
+  mv <- VU.thaw v
+  sps <- shuffleSwapPairs l
+  mapM_ (uncurry $ VUM.swap mv) sps
+  VU.freeze mv
+  
 main = undefined
+
