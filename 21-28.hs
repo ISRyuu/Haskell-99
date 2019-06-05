@@ -50,6 +50,11 @@ rnd_permu v = do
   sps <- shuffleSwapPairs l
   mapM_ (uncurry $ VUM.swap mv) sps
   VU.freeze mv
-  
+
+-- problem 26
+combinations :: [a] -> Int -> [[a]]
+combinations arra 0 = [[]]
+combinations arra n = [y:ys | y:xs <- tails arra, ys <- combinations xs (n-1)]
+
 main = undefined
 
