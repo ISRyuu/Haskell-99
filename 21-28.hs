@@ -56,5 +56,18 @@ combinations :: [a] -> Int -> [[a]]
 combinations arra 0 = [[]]
 combinations arra n = [y:ys | y:xs <- tails arra, ys <- combinations xs (n-1)]
 
+-- problem 27 helper
+combinations' :: [a] -> Int -> [([a], [a])]
+combinations' xs 0 = [([], xs)]
+combinations' [] _ = []
+combinations' (x:xs) n = a ++ b
+  where a = [(x:ys, zs) | (ys, zs) <- combinations' xs (n-1)]
+        b = [(ys, x:zs) | (ys, zs) <- combinations' xs n]
+        
+-- problem 27
+group' :: [a] -> [Int] -> [[[a]]]
+group' xs [_] = [[xs]]
+group' xs (n:ns) = [ys:ws | (ys, zs) <- combinations' xs n, ws <- group' zs ns]
+
 main = undefined
 
