@@ -7,6 +7,7 @@ import Control.Monad.Primitive
 import qualified Data.Vector.Unboxed.Mutable as VUM
 import qualified Data.Vector.Unboxed as VU
 import Control.Monad.Trans.State
+import Data.Function (on)
 
 -- problem 21
 insertAt :: a -> [a] -> Int -> [a]
@@ -68,6 +69,16 @@ combinations' (x:xs) n = a ++ b
 group' :: [a] -> [Int] -> [[[a]]]
 group' xs [_] = [[xs]]
 group' xs (n:ns) = [ys:ws | (ys, zs) <- combinations' xs n, ws <- group' zs ns]
+
+-- problem 28
+lsort :: [[a]] -> [[a]]
+lsort [] = []
+lsort (x:xs) = lsort smaller ++ [x] ++ lsort greater
+  where smaller = [z | z <- xs, length z < length x]
+        greater = [z | z <- xs, length z >= length x]
+
+lfsort :: [[a]] -> [[a]]
+lfsort xs = concat . lsort . groupBy ((==) `on` length) $ lsort xs
 
 main = undefined
 
