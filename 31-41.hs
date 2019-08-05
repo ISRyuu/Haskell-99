@@ -16,3 +16,8 @@ gcd' x y = gcd y $ x `mod` y
 -- problem 33
 coprime :: Integer -> Integer -> Bool
 coprime = ((== 1) .) . gcd'
+
+-- problem 34
+totient_phi :: Integer -> Int
+totient_phi x = length $ filter (coprime x) [1..x-1]
+
