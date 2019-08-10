@@ -21,3 +21,12 @@ coprime = ((== 1) .) . gcd'
 totient_phi :: Integer -> Int
 totient_phi x = length $ filter (coprime x) [1..x-1]
 
+-- problem 35
+primer_factors :: Integer -> [Integer]
+primer_factors 0 = []
+primer_factors 1 = []
+primer_factors x = n: primer_factors (x `div` n)
+  where
+    n = head $ dropWhile (not . is_factor x) primes
+    is_factor a b = a `mod` b == 0
+    primes = takeWhile (<= x) $ filter prime [2..]
