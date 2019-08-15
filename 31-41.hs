@@ -50,3 +50,18 @@ phi n = foldr go 1 ps
 -- problem 39
 primesR :: Integer -> Integer -> [Integer]
 primesR l u = filter prime [l..u]
+
+-- problem 40
+goldbach :: Integer -> (Integer, Integer)
+goldbach n = head [(x, y) | x <- primes, y <- primes, x+y == n]
+  where primes = takeWhile (<= n) $ filter prime [2..]
+
+-- problem 41
+goldbach_list :: Integer -> Integer -> [(Integer, Integer)]
+goldbach_list l u = map goldbach evens
+  where evens = filter even [l..u]
+
+goldbach_list' :: Integer -> Integer -> Integer -> [(Integer, Integer)]
+goldbach_list' l u n = filter f $ map goldbach evens
+  where evens = filter even [l..u]
+        f (x, y) = x > n && y > n
