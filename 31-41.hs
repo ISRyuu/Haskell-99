@@ -1,3 +1,5 @@
+import Data.List
+
 -- problem 31
 prime :: Integer -> Bool
 prime 0 = True
@@ -30,3 +32,21 @@ primer_factors x = n: primer_factors (x `div` n)
     n = head $ dropWhile (not . is_factor x) primes
     is_factor a b = a `mod` b == 0
     primes = takeWhile (<= x) $ filter prime [2..]
+
+-- problem 36
+prime_factors_mult :: Integer -> [(Integer, Integer)]
+prime_factors_mult = go . group . primer_factors
+  where go = map ((,) <$> head <*> toInteger . length)
+
+-- problem 37
+phi :: Integer -> Integer
+phi n = foldr go 1 ps
+  where ps = prime_factors_mult n
+        go (p,m) n = ((p - 1) * p ^ (m - 1)) * n
+
+-- problem 38
+-- 34 is faster than 37
+
+-- problem 39
+primesR :: Integer -> Integer -> [Integer]
+primesR l u = filter prime [l..u]
